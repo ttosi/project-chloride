@@ -1,5 +1,5 @@
-# parses crwd files
 import sys
+import re
 import pandas as pd
 
 # get filename from command line args
@@ -23,16 +23,10 @@ st = st.groupby([df["start"].dt.year, df["start"].dt.month]).agg({
     "cl": ["mean", "std", "min", "max"]
 })
 
-# get the start and end dates of the dataframes
-# to use for naming the output csv file
-bf_start = bf.index.min()
-bf_end = bf.index.max()
-st_start = st.index.min()
-st_end = st.index.max()
-
 # build the filenames
-bf_filename = f"baseflow_{bf_start}-{bf_end}_{file_name}"
-st_filename = f"storm_{st_start}-{st_end}_{file_name}"
+prefix = re.findall("crwd-\d*", file_name)
+bf_filename = f"{prefix[0]}_base.csv"
+st_filename = f"{prefix[0]}_storm.csv"
 
 # and finally write files out to csv
 bf.to_csv(bf_filename, index=True)
