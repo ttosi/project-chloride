@@ -24,7 +24,7 @@ st = st.groupby([df["start"].dt.year, df["start"].dt.month]).agg({
 })
 
 # build the filenames
-prefix = re.findall("crwd-\d*", file_name)
+prefix = re.findall("crwd-\d+", file_name)
 bf_filename = f"{prefix[0]}_base.csv"
 st_filename = f"{prefix[0]}_storm.csv"
 
